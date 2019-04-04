@@ -1,6 +1,17 @@
 spring:
   application:
     name: uaa
+  profiles:
+    active: dev
+  jpa:
+    properties:
+      hibernate.jdbc.time_zone: UTC
+    hibernate:
+      ddl-auto: none
+  messages:
+    basename: i18n/messages
   thymeleaf:
-    cache: false
-    mode: LEGACYHTML5
+    mode: HTML
+info:
+  display-profiles: dev
+
