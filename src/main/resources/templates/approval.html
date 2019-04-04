@@ -1,0 +1,14 @@
+<html>
+<body><h1>OAuth 确认</h1>
+<p>您是否希望 "client" 访问受保护的资源?</p>
+<form id="confirmationForm" name="confirmationForm" action="/oauth/authorize" method="post"><input
+        name="user_oauth_approval" value="true" type="hidden"/><label>
+    <input name="authorize" value="授权"
+           type="submit"/></label></form>
+<form id="denialForm" name="denialForm" action="/oauth/authorize" method="post">
+    <input name="user_oauth_approval"
+           value="false" type="hidden"/><label>
+    <input
+            name="deny" value="禁止" type="submit"/></label></form>
+</body>
+</html>
