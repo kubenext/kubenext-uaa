@@ -1,5 +1,5 @@
-# Kubenext User Account 
-Kubenext Uaa
+# Kubenext User Account and Authentication (UAA) Server
+
 
 ## Hazelcast 注意事项
 

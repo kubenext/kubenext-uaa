@@ -12,7 +12,7 @@
 
     <artifactId>kubenext-uaa</artifactId>
     <name>Kubenext UAA</name>
-    <description>Kubenext UAA</description>
+    <description>Kubenext User Account and Authentication (UAA) Server</description>
     <url>https://github.com/kubenext/kubenext-uaa</url>
 
     <licenses>
