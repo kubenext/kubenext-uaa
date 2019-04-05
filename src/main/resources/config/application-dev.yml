@@ -1,7 +1,7 @@
 logging:
   level:
     ROOT: DEBUG
-    com.kubenext: DEBUG
+    com.github.kubenext: DEBUG
 spring:
   profiles:
     active: dev

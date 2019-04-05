@@ -14,4 +14,9 @@ spring:
     mode: HTML
 info:
   display-profiles: dev
+common:
+  cache:
+    hazelcast:
+      instance-name: ${spring.application.name}
+      default-package: com.github.kubenext.uaa.domain.*
 
