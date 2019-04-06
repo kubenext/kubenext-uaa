@@ -33,7 +33,6 @@ import static com.github.kubenext.config.H2ConfigurationHelper.initH2Console;
  * Configuration of web application with Servlet 3.0 APIs.
  *
  * @author shangjin.li
- * @date Created in 08:22 2019-04-06
  */
 @Configuration
 public class WebConfigurer implements ServletContextInitializer, WebServerFactoryCustomizer<WebServerFactory> {

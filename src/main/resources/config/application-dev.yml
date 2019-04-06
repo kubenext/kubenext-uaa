@@ -13,12 +13,15 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:h2:file:./target/h2db/db/demo;DB_CLOSE_DELAY=-1
-    username: uaa
-    password:
+    url: jdbc:mysql://localhost:3306/uaa?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: root
+    password: 123456
     hikari:
       pool-name: Hikari
       auto-commit: false
+  h2:
+    console:
+      enabled: false
   jpa:
     database-platform:
     database: h2
@@ -33,8 +36,10 @@ spring:
       hibernate.cache.hazelcast.instance_name: uaa
       hibernate.cache.use_minimal_puts: true
       hibernate.cache.hazelcast.use_lite_member: true
-  liquibase:
-    contexts: dev
+    hibernate:
+      ddl-auto: update
+#  liquibase:
+#    contexts: dev
   mail:
     host: localhost
     port: 25
@@ -44,3 +49,4 @@ spring:
     cache-duration: PT1S
   thymeleaf:
     cache: false
+

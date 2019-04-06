@@ -12,7 +12,6 @@ import java.util.Objects;
  * Persist AuditEvent managed by the Spring Boot actuator.
  *
  * @author shangjin.li
- * @date Created in 01:44 2019-04-06
  */
 @Entity
 public class PersistentAuditEvent implements Serializable {

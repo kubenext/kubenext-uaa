@@ -9,8 +9,6 @@ import java.util.*;
 
 /**
  * @author shangjin.li
- * @date Created in 01:40 2019-04-06
- * @description AuditEventConverter
  */
 @Component
 public class AuditEventConverter {
