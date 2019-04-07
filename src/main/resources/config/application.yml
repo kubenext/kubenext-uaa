@@ -19,4 +19,15 @@ common:
     hazelcast:
       instance-name: ${spring.application.name}
       default-package: com.github.kubenext.uaa.domain.*
+  swagger:
+    default-include-pattern: /api/.*
+    title: demo API
+    description: demo API documentation
+    version: 0.0.1
+    terms-of-service-url:
+    contact-name:
+    contact-url:
+    contact-email:
+    license:
+    license-url:
 

@@ -5,6 +5,8 @@ logging:
 spring:
   profiles:
     active: dev
+    include:
+      - swagger
   devtools:
     restart:
       additional-exclude: .h2.server.properties
