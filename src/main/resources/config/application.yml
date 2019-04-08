@@ -21,13 +21,13 @@ common:
       default-package: com.github.kubenext.uaa.domain.*
   swagger:
     default-include-pattern: /api/.*
-    title: demo API
-    description: demo API documentation
+    title: UAA API
+    description: Kubenext User Account and Authentication (UAA) Server
     version: 0.0.1
-    terms-of-service-url:
-    contact-name:
-    contact-url:
-    contact-email:
-    license:
-    license-url:
+    terms-of-service-url: http://www.kubenext.com
+    contact-name: Li.shangjin
+    contact-url: http://www.kubenext.com
+    contact-email: li.shangjin@icloud.com
+    license: Apache License, Version 2.0
+    license-url: http://www.apache.org/licenses/LICENSE-2.0
 

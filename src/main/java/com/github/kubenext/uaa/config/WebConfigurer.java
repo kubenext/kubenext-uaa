@@ -80,7 +80,7 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         if (!StringUtils.isEmpty(env.getActiveProfiles())) {
-            logger.info("Web application configuration, using profiles: {}", env.getActiveProfiles());
+            //logger.info("Web application configuration, using profiles: {}", env.getActiveProfiles());
         }
         EnumSet<DispatcherType> disps = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ASYNC);
         if (env.acceptsProfiles(Profiles.of(SpringProfiles.SPRING_PROFILE_DEVELOPMENT))) {
