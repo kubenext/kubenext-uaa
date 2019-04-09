@@ -64,7 +64,7 @@ public class LoggingConfiguration {
         String customFields = "{\"app_name\":\"" + appName + "\",\"app_port\":\"" + serverPort + "\"}";
 
         LogstashEncoder logstashEncoder = new LogstashEncoder();
-        logstashAppender.addDestinations(new InetSocketAddress("",100));
+        logstashAppender.addDestinations(new InetSocketAddress(commonProperties.getLogging().getLogstash().getHost(),commonProperties.getLogging().getLogstash().getPort()));
 
         ShortenedThrowableConverter throwableConverter = new ShortenedThrowableConverter();
         throwableConverter.setRootCauseFirst(true);
