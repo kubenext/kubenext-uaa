@@ -77,7 +77,7 @@ public class LoggingConfiguration {
         AsyncAppender asyncAppender = new AsyncAppender();
         asyncAppender.setContext(context);
         asyncAppender.setName(ASYNC_LOGSTASH_APPENDER_NAME);
-        asyncAppender.setQueueSize(100);
+        asyncAppender.setQueueSize(commonProperties.getLogging().getLogstash().getQueueSize());
         asyncAppender.addAppender(logstashAppender);
         asyncAppender.start();
         context.getLogger("ROOT").addAppender(asyncAppender);
