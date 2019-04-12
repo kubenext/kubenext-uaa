@@ -1,6 +1,7 @@
 package com.github.kubenext.uaa.config;
 
 import com.github.kubenext.properties.CommonProperties;
+import com.github.kubenext.uaa.security.DomainClientDetailsService;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -10,12 +11,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
@@ -58,21 +61,25 @@ public class AuthorizationServerConfigurer extends AuthorizationServerConfigurer
         this.applicationContext = applicationContext;
     }
 
+    @Autowired
+    private DomainClientDetailsService domainClientDetailsService;
+
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        int accessTokenValidity = uaaProperties.getClient().getAccessTokenValidityInSeconds();
-        accessTokenValidity = Math.max(accessTokenValidity, MIN_ACCESS_TOKEN_VALIDITY_SECS);
-        int refreshTokenValidity = uaaProperties.getClient().getRefreshTokenValidityInSecondsForRememberMe();
-        refreshTokenValidity = Math.max(refreshTokenValidity, accessTokenValidity);
+        clients.withClientDetails(domainClientDetailsService);
+//        int accessTokenValidity = uaaProperties.getClient().getAccessTokenValidityInSeconds();
+//        accessTokenValidity = Math.max(accessTokenValidity, MIN_ACCESS_TOKEN_VALIDITY_SECS);
+//        int refreshTokenValidity = uaaProperties.getClient().getRefreshTokenValidityInSecondsForRememberMe();
+//        refreshTokenValidity = Math.max(refreshTokenValidity, accessTokenValidity);
 
-        clients.inMemory()
-            .withClient(uaaProperties.getClient().getClientId())
-            .secret(passwordEncoder.encode(uaaProperties.getClient().getSecret()))
-            .scopes("openid")
-            .autoApprove(true)
-            .authorizedGrantTypes("implicit","refresh_token", "password", "authorization_code")
-            .accessTokenValiditySeconds(accessTokenValidity)
-            .refreshTokenValiditySeconds(refreshTokenValidity);
+//        clients.inMemory().clients(clientDetailsService)
+//            .withClient(uaaProperties.getClient().getClientId())
+//            .secret(passwordEncoder.encode(uaaProperties.getClient().getSecret()))
+//            .scopes("openid")
+//            .autoApprove(true)
+//            .authorizedGrantTypes("implicit","refresh_token", "password", "authorization_code")
+//            .accessTokenValiditySeconds(accessTokenValidity)
+//            .refreshTokenValiditySeconds(refreshTokenValidity);
     }
 
     @Override
