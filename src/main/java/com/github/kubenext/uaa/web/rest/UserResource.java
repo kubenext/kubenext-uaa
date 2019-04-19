@@ -75,7 +75,7 @@ public class UserResource {
     @DeleteMapping("/users/{login}")
     public ResponseEntity<Void> delete(@PathVariable @LoginMustExist String login) {
         userService.deleteUser(login);
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok().headers(HeaderUtil.createAlert( "userManagement.deleted", login)).build();
     }
 
 }
