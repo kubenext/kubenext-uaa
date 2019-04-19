@@ -1,7 +1,7 @@
 package com.github.kubenext.uaa.service.dto;
 
 import com.github.kubenext.uaa.config.Constants;
-import com.github.kubenext.uaa.validation.constraints.AuthorityExist;
+import com.github.kubenext.uaa.validation.constraints.AuthorityNon;
 import com.github.kubenext.uaa.validation.constraints.LoginDuplicate;
 import com.github.kubenext.uaa.validation.constraints.UserIdExist;
 import io.swagger.annotations.ApiModelProperty;
@@ -52,7 +52,7 @@ public class UpdateUserDTO {
     private String langKey;
 
     @ApiModelProperty(value = "用户角色")
-    @AuthorityExist
+    @AuthorityNon
     private String[] authorities;
 
     public Long getId() {

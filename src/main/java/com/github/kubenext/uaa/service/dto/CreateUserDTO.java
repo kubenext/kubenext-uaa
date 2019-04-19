@@ -1,7 +1,7 @@
 package com.github.kubenext.uaa.service.dto;
 
 import com.github.kubenext.uaa.config.Constants;
-import com.github.kubenext.uaa.validation.constraints.AuthorityExist;
+import com.github.kubenext.uaa.validation.constraints.AuthorityNon;
 import com.github.kubenext.uaa.validation.constraints.EmailDuplicate;
 import com.github.kubenext.uaa.validation.constraints.LoginDuplicate;
 import io.swagger.annotations.ApiModel;
@@ -29,7 +29,7 @@ public class CreateUserDTO {
     private String login;
 
     @ApiModelProperty(value = "用户角色", required = true)
-    @AuthorityExist
+    @AuthorityNon
     private String[] authorities;
 
     @ApiModelProperty(value = "电子邮箱")
