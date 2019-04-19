@@ -11,6 +11,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.Arrays;
 
 /**
@@ -24,7 +25,7 @@ public class CreateUserDTO {
     @ApiModelProperty(value = "登录帐号", required = true)
     @NotBlank
     @Pattern(regexp = Constants.LOGIN_REGEX)
-    @Length(min = 6, max = 32)
+    @Size(min = 6, max = 32)
     @LoginMustNotExist
     private String login;
 
@@ -35,23 +36,23 @@ public class CreateUserDTO {
     @ApiModelProperty(value = "电子邮箱")
     @Email
     @EmailMustNotExist
-    @Length(min = 5, max = 254)
+    @Size(min = 5, max = 254)
     private String email;
 
     @ApiModelProperty(value = "名字")
-    @Length(max = 50)
+    @Size(max = 50)
     private String firstName;
 
     @ApiModelProperty(value = "姓氏")
-    @Length(max = 50)
+    @Size(max = 50)
     private String lastName;
 
     @ApiModelProperty(value = "语种")
-    @Length(min = 2, max = 6)
+    @Size(min = 2, max = 6)
     private String langKey;
 
     @ApiModelProperty(value = "头像")
-    @Length(max = 256)
+    @Size(max = 256)
     private String avatar;
 
     public String getLogin() {

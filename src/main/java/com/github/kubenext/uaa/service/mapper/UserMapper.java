@@ -81,6 +81,9 @@ public interface UserMapper {
 
     @Named("formatAuthorityToSet")
     default Set<Authority> formatAuthorityToSet(String[] source) {
+        if (source == null) {
+            return null;
+        }
         return Arrays.stream(source).map(authority -> {
             Authority auth = new Authority();
             auth.setName(authority);
@@ -90,6 +93,9 @@ public interface UserMapper {
 
     @Named("formatAuthorityToArray")
     default String[] formatAuthorityToArray(Set<Authority> source) {
+        if (source == null) {
+            return null;
+        }
         return source.stream().map(Authority::getName).toArray(String[]::new);
     }
 

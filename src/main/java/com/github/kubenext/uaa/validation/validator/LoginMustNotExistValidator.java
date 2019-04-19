@@ -19,6 +19,9 @@ public class LoginMustNotExistValidator implements ConstraintValidator<LoginMust
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
+        if (value == null) {
+            return true;
+        }
         if (userRepository.findOneByLogin(value).isPresent()) {
             return false;
         }

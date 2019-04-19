@@ -25,6 +25,9 @@ public class AuthorityMustExistValidator implements ConstraintValidator<Authorit
 
     @Override
     public boolean isValid(String[] value, ConstraintValidatorContext context) {
+        if (value == null) {
+            return true;
+        }
         Set<Authority> authorities = Arrays.stream(value)
                 .map(authority -> authorityRepository.findById(authority))
                 .filter(Optional::isPresent)

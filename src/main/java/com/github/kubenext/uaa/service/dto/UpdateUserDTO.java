@@ -2,8 +2,10 @@ package com.github.kubenext.uaa.service.dto;
 
 import com.github.kubenext.uaa.config.Constants;
 import com.github.kubenext.uaa.validation.constraints.AuthorityMustExist;
+import com.github.kubenext.uaa.validation.constraints.EmailMustNotExist;
 import com.github.kubenext.uaa.validation.constraints.LoginMustNotExist;
 import com.github.kubenext.uaa.validation.constraints.UserIdMustExist;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
 
@@ -15,6 +17,7 @@ import java.util.Arrays;
 /**
  * @author shangjin.li
  */
+@ApiModel("更新用户")
 public class UpdateUserDTO {
 
     @ApiModelProperty(value = "用户ID", required = true)
@@ -23,32 +26,33 @@ public class UpdateUserDTO {
 
     @ApiModelProperty(value = "登录帐号")
     @Pattern(regexp = Constants.LOGIN_REGEX)
-    @Length(min = 6, max = 32)
+    @Size(min = 6, max = 32)
     @LoginMustNotExist
     private String login;
 
     @ApiModelProperty(value = "电子邮件")
     @Email
     @Size(min = 5, max = 254)
+    @EmailMustNotExist
     private String email;
 
     @ApiModelProperty(value = "名字")
-    @Length(max = 50)
+    @Size(max = 50)
     private String firstName;
 
     @ApiModelProperty(value = "姓氏")
-    @Length(max = 50)
+    @Size(max = 50)
     private String lastName;
 
     @ApiModelProperty(value = "头像")
-    @Length(max = 256)
+    @Size(max = 256)
     private String imageUrl;
 
     @ApiModelProperty("激活状态")
     private Boolean activated;
 
     @ApiModelProperty(value = "语种")
-    @Length(min = 2, max = 6)
+    @Size(min = 2, max = 6)
     private String langKey;
 
     @ApiModelProperty(value = "用户角色")
