@@ -1,11 +1,16 @@
 package com.github.kubenext.uaa.web.rest;
 
-import com.github.kubenext.uaa.domain.Authority;
 import com.github.kubenext.uaa.security.AuthoritiesConstants;
 import com.github.kubenext.uaa.service.UserService;
+import com.github.kubenext.uaa.service.dto.CreateUserDTO;
+import com.github.kubenext.uaa.service.dto.UpdateUserDTO;
 import com.github.kubenext.uaa.service.dto.UserDTO;
 import com.github.kubenext.uaa.utils.HeaderUtil;
 import com.github.kubenext.uaa.utils.PaginationUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -25,6 +30,7 @@ import static com.github.kubenext.uaa.utils.ResponseUtil.wrapOrNotFound;
 /**
  * @author shangjin.li
  */
+@Api(tags = "用户管理")
 @RestController
 @RequestMapping("/api")
 public class UserResource {
@@ -38,18 +44,19 @@ public class UserResource {
         this.userService = userService;
     }
 
+    @ApiOperation(value = "创建用户")
     @PostMapping("/users")
     @PreAuthorize("hasRole(\""+ AuthoritiesConstants.ADMIN +"\")")
-    public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserDTO userDTO) throws URISyntaxException {
-        logger.debug("REST request to save User : {}", userDTO);
-        return createdOrFailure(userService.createUser(userDTO),"/api/users/" + userDTO.getLogin(), HeaderUtil.createAlert("userManagement.created", userDTO.getLogin()));
+    public ResponseEntity<UserDTO> createUser(@Valid @RequestBody CreateUserDTO createUserDTO) throws URISyntaxException {
+        logger.debug("REST request to save User : {}", createUserDTO);
+        return createdOrFailure(userService.createUser(createUserDTO),"/api/users/" + createUserDTO.getLogin(), HeaderUtil.createAlert("userManagement.created", createUserDTO.getLogin()));
     }
 
     @PutMapping("/users")
     @PreAuthorize("hasRole(\""+ AuthoritiesConstants.ADMIN +"\")")
-    public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UserDTO userDTO) {
-        logger.debug("REST request to update User : {}", userDTO);
-        return wrapOrNotFound(userService.updateUser(userDTO));
+    public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UpdateUserDTO updateUserDTO) {
+        logger.debug("REST request to update User : {}", updateUserDTO);
+        return wrapOrNotFound(userService.updateUser(updateUserDTO));
     }
 
     @GetMapping("/users")
@@ -58,6 +65,5 @@ public class UserResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/users");
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
-
 
 }

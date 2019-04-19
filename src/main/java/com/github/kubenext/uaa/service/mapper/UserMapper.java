@@ -1,13 +1,16 @@
 package com.github.kubenext.uaa.service.mapper;
 
+import com.github.kubenext.uaa.domain.Authority;
 import com.github.kubenext.uaa.domain.User;
+import com.github.kubenext.uaa.service.dto.CreateUserDTO;
+import com.github.kubenext.uaa.service.dto.UpdateUserDTO;
 import com.github.kubenext.uaa.service.dto.UserDTO;
-import org.mapstruct.BeanMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author lishangjin
@@ -15,11 +18,18 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
+    @Mapping(source = "authorities", target = "authorities", qualifiedByName = "formatAuthorityToSet")
+    User toUser(CreateUserDTO createUserDTO);
+
+    @Mapping(source = "authorities", target = "authorities", qualifiedByName = "formatAuthorityToSet")
+    User toUser(UpdateUserDTO updateUserDTO);
+
     /**
      * User mapping UserDTO
      * @param user
      * @return
      */
+    @Mapping(source = "authorities", target = "authorities", qualifiedByName = "formatAuthorityToArray")
     UserDTO toUserDTO(User user);
 
     /**
@@ -27,6 +37,7 @@ public interface UserMapper {
      * @param userDTO
      * @return
      */
+    @Mapping(source = "authorities", target = "authorities", qualifiedByName = "formatAuthorityToSet")
     User toUser(UserDTO userDTO);
 
     /**
@@ -48,8 +59,14 @@ public interface UserMapper {
      * @param user
      * @param userDTO
      */
+    @Mapping(source = "authorities", target = "authorities", qualifiedByName = "formatAuthorityToSet")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateUser(@MappingTarget User user, UserDTO userDTO);
+
+
+    @Mapping(source = "authorities", target = "authorities", qualifiedByName = "formatAuthorityToSet")
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void updateUser(@MappingTarget User user, UpdateUserDTO updateUserDTO);
 
     /**
      * Params Update User
@@ -61,5 +78,19 @@ public interface UserMapper {
      * @param imageUrl
      */
     void updateUser(@MappingTarget User user, String firstName, String lastName, String email, String langKey, String imageUrl);
+
+    @Named("formatAuthorityToSet")
+    default Set<Authority> formatAuthorityToSet(String[] source) {
+        return Arrays.stream(source).map(authority -> {
+            Authority auth = new Authority();
+            auth.setName(authority);
+            return auth;
+        }).collect(Collectors.toSet());
+    }
+
+    @Named("formatAuthorityToArray")
+    default String[] formatAuthorityToArray(Set<Authority> source) {
+        return source.stream().map(Authority::getName).toArray(String[]::new);
+    }
 
 }

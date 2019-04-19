@@ -7,6 +7,8 @@ import com.github.kubenext.uaa.repository.AuthorityRepository;
 import com.github.kubenext.uaa.repository.UserRepository;
 import com.github.kubenext.uaa.security.AuthoritiesConstants;
 import com.github.kubenext.uaa.security.SecurityUtils;
+import com.github.kubenext.uaa.service.dto.CreateUserDTO;
+import com.github.kubenext.uaa.service.dto.UpdateUserDTO;
 import com.github.kubenext.uaa.service.dto.UserDTO;
 import com.github.kubenext.uaa.service.mapper.UserMapper;
 import com.github.kubenext.uaa.utils.RandomUtil;
@@ -24,6 +26,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -141,30 +144,22 @@ public class UserService {
 
     /**
      * 创建用户
-     * @param userDTO
+     * @param createUserDTO
      * @return
      */
-    public Optional<UserDTO> createUser(UserDTO userDTO) {
-        if (userDTO.getId() != null) {
-            throw new BadRequestAlertException("A new user cannot already have an ID", "userManagement", "idexists");
-        }
-        User user = userMapper.toUser(userDTO);
-        if (user.getLangKey() == null) {
+    public Optional<UserDTO> createUser(CreateUserDTO createUserDTO) {
+        User user = userMapper.toUser(createUserDTO);
+        // 语种为Null，需要设置默认语种
+        if (StringUtils.isEmpty(user.getLangKey())) {
             user.setLangKey(Constants.DEFAULT_LANGUAGE);
         }
+        // 设置随机密码，创建的用户根据重置密码获取密码
         String encryptedPassword = passwordEncoder.encode(RandomUtil.generatePassword());
         user.setPassword(encryptedPassword);
         user.setResetKey(RandomUtil.generateResetKey());
         user.setResetDate(Instant.now());
         user.setActivated(true);
-        if (!CollectionUtils.isEmpty(user.getAuthorities())) {
-            Set<Authority> authorities = user.getAuthorities().stream()
-                    .map(authority -> authorityRepository.findById(authority.getName()))
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
-                    .collect(Collectors.toSet());
-            user.setAuthorities(authorities);
-        }
+
         userRepository.save(user);
         this.clearUserCaches(user);
         logger.debug("Created Information for User: {}", user);
@@ -191,25 +186,15 @@ public class UserService {
 
     /**
      * 修改用户所有信息
-     * @param userDTO
+     * @param updateUserDTO
      * @return
      */
-    public Optional<UserDTO> updateUser(UserDTO userDTO) {
-        return Optional.of(userRepository.findById(userDTO.getId()))
-                .filter(Optional::isPresent)
-                .map(Optional::get)
+    public Optional<UserDTO> updateUser(UpdateUserDTO updateUserDTO) {
+        return userRepository.findById(updateUserDTO.getId())
                 .map(user -> {
+                    userMapper.updateUser(user, updateUserDTO);
                     this.clearUserCaches(user);
-                    userMapper.updateUser(user, userDTO);
-                    Set<Authority> authorities = user.getAuthorities();
-                    authorities.clear();
-                    userDTO.getAuthorities().stream()
-                            .map(authority -> authorityRepository.findById(authority.getName()))
-                            .filter(Optional::isPresent)
-                            .map(Optional::get)
-                            .forEach(authorities::add);
-                    this.clearUserCaches(user);
-                    logger.debug("Changed Information for User: {}", user);
+                    logger.debug("Updated Information for User: {}", user);
                     return userMapper.toUserDTO(user);
                 });
     }

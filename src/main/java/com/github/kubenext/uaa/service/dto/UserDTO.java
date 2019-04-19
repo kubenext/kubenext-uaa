@@ -2,55 +2,70 @@ package com.github.kubenext.uaa.service.dto;
 
 import com.github.kubenext.uaa.config.Constants;
 import com.github.kubenext.uaa.domain.Authority;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.Set;
 
 /**
  * @author shangjin.li
  */
+@ApiModel("用户")
 public class UserDTO {
 
+    @ApiModelProperty("用户ID，创建时请不要携带此参数")
     private Long id;
 
+    @ApiModelProperty(value = "用户登录帐号，帐号规则`^[_.@A-Za-z0-9-]*$`", required = true)
     @NotBlank
     @Pattern(regexp = Constants.LOGIN_REGEX)
     @Size(min = 1, max = 50)
     private String login;
 
-    @Size(max = 50)
+    @ApiModelProperty(value = "用户姓氏", required = true)
+    @Size(min = 1, max = 50)
     private String firstName;
 
-    @Size(max = 50)
+    @ApiModelProperty(value = "用户名字", required = true)
+    @Size(min = 1, max = 50)
     private String lastName;
 
+    @ApiModelProperty(value = "电子邮件", required = true)
     @Email
     @Size(min = 5, max = 254)
     private String email;
 
+    @ApiModelProperty("头像地址")
     @Size(max = 256)
     private String imageUrl;
 
-    private boolean activated = false;
+    @ApiModelProperty("激活状态")
+    private Boolean activated;
 
+    @ApiModelProperty("语种")
     @Size(min = 2, max = 6)
     private String langKey;
 
+    @ApiModelProperty("创建者，由系统自动维护")
     private String createdBy;
 
+    @ApiModelProperty("创建时间，由系统自动维护")
     private Instant createdDate;
 
+    @ApiModelProperty("最后修改者，由系统自动维护")
     private String lastModifiedBy;
 
+    @ApiModelProperty("最后修改日期，由系统自动维护")
     private Instant lastModifiedDate;
 
-    private Set<Authority> authorities;
-
-
+    @ApiModelProperty("用户角色")
+    private String[] authorities;
 
     public Long getId() {
         return id;
@@ -100,11 +115,11 @@ public class UserDTO {
         this.imageUrl = imageUrl;
     }
 
-    public boolean isActivated() {
+    public Boolean getActivated() {
         return activated;
     }
 
-    public void setActivated(boolean activated) {
+    public void setActivated(Boolean activated) {
         this.activated = activated;
     }
 
@@ -148,11 +163,11 @@ public class UserDTO {
         this.lastModifiedDate = lastModifiedDate;
     }
 
-    public Set<Authority> getAuthorities() {
+    public String[] getAuthorities() {
         return authorities;
     }
 
-    public void setAuthorities(Set<Authority> authorities) {
+    public void setAuthorities(String[] authorities) {
         this.authorities = authorities;
     }
 
@@ -171,7 +186,7 @@ public class UserDTO {
                 ", createdDate=" + createdDate +
                 ", lastModifiedBy='" + lastModifiedBy + '\'' +
                 ", lastModifiedDate=" + lastModifiedDate +
-                ", authorities=" + authorities +
+                ", authorities=" + Arrays.toString(authorities) +
                 '}';
     }
 }
