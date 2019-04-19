@@ -2,7 +2,7 @@ package com.github.kubenext.uaa.validation.validator;
 
 import com.github.kubenext.uaa.domain.Authority;
 import com.github.kubenext.uaa.repository.AuthorityRepository;
-import com.github.kubenext.uaa.validation.constraints.AuthorityNon;
+import com.github.kubenext.uaa.validation.constraints.AuthorityMustExist;
 import org.springframework.util.CollectionUtils;
 
 import javax.validation.ConstraintValidator;
@@ -15,11 +15,11 @@ import java.util.stream.Collectors;
 /**
  * @author shangjin.li
  */
-public class AuthorityNonValidator implements ConstraintValidator<AuthorityNon, String[]> {
+public class AuthorityMustExistValidator implements ConstraintValidator<AuthorityMustExist, String[]> {
 
     private final AuthorityRepository authorityRepository;
 
-    public AuthorityNonValidator(AuthorityRepository authorityRepository) {
+    public AuthorityMustExistValidator(AuthorityRepository authorityRepository) {
         this.authorityRepository = authorityRepository;
     }
 

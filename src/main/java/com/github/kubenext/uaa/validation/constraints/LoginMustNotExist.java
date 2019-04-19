@@ -1,6 +1,6 @@
 package com.github.kubenext.uaa.validation.constraints;
 
-import com.github.kubenext.uaa.validation.validator.UserIdNonValidator;
+import com.github.kubenext.uaa.validation.validator.LoginMustNotExistValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -10,16 +10,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 用户ID是否存在
- *
  * @author shangjin.li
  */
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = UserIdNonValidator.class)
-public @interface UserIdNon {
+@Constraint(validatedBy = LoginMustNotExistValidator.class)
+public @interface LoginMustNotExist {
 
-    String message() default "User is not Exist";
+    String message() default "{validation.user.login.must.not.exist}";
 
     Class<?>[] groups() default {};
 

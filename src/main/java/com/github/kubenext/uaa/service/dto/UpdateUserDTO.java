@@ -1,9 +1,9 @@
 package com.github.kubenext.uaa.service.dto;
 
 import com.github.kubenext.uaa.config.Constants;
-import com.github.kubenext.uaa.validation.constraints.AuthorityNon;
-import com.github.kubenext.uaa.validation.constraints.LoginDuplicate;
-import com.github.kubenext.uaa.validation.constraints.UserIdExist;
+import com.github.kubenext.uaa.validation.constraints.AuthorityMustExist;
+import com.github.kubenext.uaa.validation.constraints.LoginMustNotExist;
+import com.github.kubenext.uaa.validation.constraints.UserIdMustExist;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
 
@@ -18,13 +18,13 @@ import java.util.Arrays;
 public class UpdateUserDTO {
 
     @ApiModelProperty(value = "用户ID", required = true)
-    @UserIdExist
+    @UserIdMustExist
     private Long id;
 
     @ApiModelProperty(value = "登录帐号")
     @Pattern(regexp = Constants.LOGIN_REGEX)
     @Length(min = 6, max = 32)
-    @LoginDuplicate
+    @LoginMustNotExist
     private String login;
 
     @ApiModelProperty(value = "电子邮件")
@@ -52,7 +52,7 @@ public class UpdateUserDTO {
     private String langKey;
 
     @ApiModelProperty(value = "用户角色")
-    @AuthorityNon
+    @AuthorityMustExist
     private String[] authorities;
 
     public Long getId() {

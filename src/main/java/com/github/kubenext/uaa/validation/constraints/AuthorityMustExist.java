@@ -1,6 +1,6 @@
 package com.github.kubenext.uaa.validation.constraints;
 
-import com.github.kubenext.uaa.validation.validator.AuthorityNonValidator;
+import com.github.kubenext.uaa.validation.validator.AuthorityMustExistValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -11,10 +11,10 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = AuthorityNonValidator.class)
-public @interface AuthorityNon {
+@Constraint(validatedBy = AuthorityMustExistValidator.class)
+public @interface AuthorityMustExist {
 
-    String message() default "Authority is not exist";
+    String message() default "{validation.authority.must.exist}";
 
     Class<?>[] groups() default {};
 

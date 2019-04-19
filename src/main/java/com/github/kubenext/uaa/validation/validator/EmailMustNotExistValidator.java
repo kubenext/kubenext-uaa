@@ -1,7 +1,7 @@
 package com.github.kubenext.uaa.validation.validator;
 
 import com.github.kubenext.uaa.repository.UserRepository;
-import com.github.kubenext.uaa.validation.constraints.LoginDuplicate;
+import com.github.kubenext.uaa.validation.constraints.EmailMustNotExist;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -9,20 +9,19 @@ import javax.validation.ConstraintValidatorContext;
 /**
  * @author shangjin.li
  */
-public class LoginDuplicateValidator implements ConstraintValidator<LoginDuplicate, String> {
+public class EmailMustNotExistValidator implements ConstraintValidator<EmailMustNotExist, String> {
 
     private final UserRepository userRepository;
 
-    public LoginDuplicateValidator(UserRepository userRepository) {
+    public EmailMustNotExistValidator(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        if (userRepository.findOneByLogin(value).isPresent()) {
+        if (userRepository.findOneByEmailIgnoreCase(value).isPresent()) {
             return false;
-        } else {
-            return true;
         }
+        return true;
     }
 }

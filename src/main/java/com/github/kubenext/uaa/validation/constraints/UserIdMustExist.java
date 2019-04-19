@@ -1,6 +1,6 @@
 package com.github.kubenext.uaa.validation.constraints;
 
-import com.github.kubenext.uaa.validation.validator.UserIdExistValidator;
+import com.github.kubenext.uaa.validation.validator.UserIdMustExistValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -16,10 +16,10 @@ import java.lang.annotation.Target;
  */
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = UserIdExistValidator.class)
-public @interface UserIdExist {
+@Constraint(validatedBy = UserIdMustExistValidator.class)
+public @interface UserIdMustExist {
 
-    String message() default "User is Exist";
+    String message() default "{validation.user.id.must.exist}";
 
     Class<?>[] groups() default {};
 
