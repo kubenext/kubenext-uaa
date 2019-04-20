@@ -1,5 +1,6 @@
 package com.github.kubenext.uaa.web.rest;
 
+import com.github.kubenext.uaa.config.Constants;
 import com.github.kubenext.uaa.security.AuthoritiesConstants;
 import com.github.kubenext.uaa.service.UserService;
 import com.github.kubenext.uaa.service.dto.CreateUserDTO;
@@ -50,7 +51,7 @@ public class UserResource {
         this.userService = userService;
     }
 
-    @ApiOperation(value = "创建用户")
+    @ApiOperation(value = "创建")
     @PostMapping("/users")
     @PreAuthorize("hasRole(\""+ AuthoritiesConstants.ADMIN +"\")")
     public ResponseEntity<UserDTO> create(@Valid @RequestBody CreateUserDTO createUserDTO) throws URISyntaxException {
@@ -58,6 +59,7 @@ public class UserResource {
         return createdOrFailure(userService.createUser(createUserDTO),"/api/users/" + createUserDTO.getLogin(), HeaderUtil.createAlert("userManagement.created", createUserDTO.getLogin()));
     }
 
+    @ApiOperation(value = "修改")
     @PutMapping("/users")
     @PreAuthorize("hasRole(\""+ AuthoritiesConstants.ADMIN +"\")")
     public ResponseEntity<UserDTO> update(@Valid @RequestBody UpdateUserDTO updateUserDTO) {
@@ -65,6 +67,7 @@ public class UserResource {
         return wrapOrNotFound(userService.updateUser(updateUserDTO));
     }
 
+    @ApiOperation(value = "分页")
     @GetMapping("/users")
     public ResponseEntity<List<UserDTO>> page(Pageable pageable) {
         final Page<UserDTO> page = userService.getAllManaedUsers(pageable);
@@ -72,7 +75,14 @@ public class UserResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
-    @DeleteMapping("/users/{login}")
+    @ApiOperation(value = "详情")
+    @GetMapping("/users/{login:"+ Constants.LOGIN_REGEX+"}")
+    public ResponseEntity<UserDTO> detail(@PathVariable @LoginMustExist String login) {
+        return ResponseEntity.ok(userService.getUserWithAuthoritiesByLogin(login).get());
+    }
+
+    @ApiOperation(value = "删除")
+    @DeleteMapping("/users/{login:"+ Constants.LOGIN_REGEX+"}")
     public ResponseEntity<Void> delete(@PathVariable @LoginMustExist String login) {
         userService.deleteUser(login);
         return ResponseEntity.ok().headers(HeaderUtil.createAlert( "userManagement.deleted", login)).build();
